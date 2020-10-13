@@ -247,6 +247,28 @@ def updateMail():
     else:
         return json.dumps({'html': '<span>Enter the required fields</span>'})
 
+@app.route("/addAdvertisement", methods=["GET", "POST"])
+def addAdvertisement():
+    if request.method == 'GET':
+        cursor.execute("Select Id, Email From User")
+        user = cursor.fetchall()
+        cursor.execute("Select Id, Title from Job")
+        job = cursor.fetchall()
+        return render_template('add/addAdvertisement.html', user = user, job = job)
+    elif request.method == "POST":
+        IdUser = int(request.json['user'])
+        IdJob = int(request.json['job'])
+        if IdUser and IdJob:
+            cursor.callproc('sp_insertAdvertisement', (IdUser, IdJob))
+            data = cursor.fetchall()
+            if len(data) == 0:
+                conn.commit()
+                return json.dumps({'message': 'Advertisement created successfully !'})
+            else:
+                return json.dumps({'error': str(data[0])})
+        else:
+            return json.dumps({'html': '<span>Enter the required fields</span>'})
+
 
 # @app.route("/", methods=["GET", "POST"])
 # def main():

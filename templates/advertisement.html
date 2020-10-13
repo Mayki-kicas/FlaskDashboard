@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% block title %} advertisement {% endblock %} {% block content %}
 <h3>Advertisement</h3>
+<button type="button" class="btn btn-success" onclick="">Add</button>
 <table class="table">
     <thead>
         <tr>
@@ -40,6 +41,10 @@
         }
 
 
+    })
+
+    $(".btn-success").click(function() {
+        document.location.href = "/addAdvertisement"
     })
 </script>
 {% endblock %}
