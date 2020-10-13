@@ -269,6 +269,26 @@ def addAdvertisement():
         else:
             return json.dumps({'html': '<span>Enter the required fields</span>'})
 
+@app.route("/addCategory", methods=["GET", "POST"])
+def addCategory():
+    if request.method == 'GET':
+        return render_template('add/addCategory.html')
+    elif request.method == 'POST':
+        title = request.json['title']
+        param_list = [title]
+        if title:
+            cursor.callproc('sp_insertCategory', (param_list))
+
+            data = cursor.fetchall()
+            if len(data) == 0:
+                conn.commit()
+                return json.dumps({'message': 'Category created successfully !'})
+            else:
+                return json.dumps({'error': str(data[0])})
+        else:
+            return json.dumps({'html': '<span>Enter the required fields</span>'})
+
+
 
 # @app.route("/", methods=["GET", "POST"])
 # def main():
