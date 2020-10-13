@@ -130,7 +130,7 @@ def removeJob():
 def getUserUpdate(idU):
         cursor.execute("SELECT * from `User` where Id="+idU)
         data = cursor.fetchall()
-        return render_template('updateUser.html', value = data)
+        return render_template('update/updateUser.html', value = data)
 
 @app.route("/updateUser", methods=["POST"])
 def updateUser():
@@ -157,7 +157,7 @@ def updateUser():
 def getCategoryUpdate(idCat):
         cursor.execute("SELECT * from `Category` where Id="+idCat)
         data = cursor.fetchall()
-        return render_template('updateCategory.html', value = data)
+        return render_template('update/updateCategory.html', value = data)
 
 @app.route("/updateCategory", methods=["POST"])
 def updateCategory():
@@ -178,7 +178,7 @@ def updateCategory():
 def getCompanyUpdate(idComp):
         cursor.execute("SELECT * from `Company` where Id="+idComp)
         data = cursor.fetchall()
-        return render_template('updateCompany.html', value = data)
+        return render_template('update/updateCompany.html', value = data)
 
 @app.route("/updateCompany", methods=["POST"])
 def updateCompany():
@@ -204,7 +204,7 @@ def getJobUpdate(idJ):
         selectComp = cursor.fetchall()
         cursor.execute("SELECT * From Category")
         selectCat = cursor.fetchall()
-        return render_template('updateJob.html', value = data, selectComp= selectComp, selectCat= selectCat)
+        return render_template('update/updateJob.html', value = data, selectComp= selectComp, selectCat= selectCat)
 
 @app.route("/updateJob", methods=["POST"])
 def updateJob():
@@ -230,7 +230,7 @@ def updateJob():
 def getMailUpdate(idM):
         cursor.execute("SELECT * from `Mail` where Id="+idM)
         data = cursor.fetchall()
-        return render_template('updateMail.html', value = data)
+        return render_template('update/updateMail.html', value = data)
 
 @app.route("/updateMail", methods=["POST"])
 def updateMail():
