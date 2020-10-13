@@ -288,6 +288,23 @@ def addCategory():
         else:
             return json.dumps({'html': '<span>Enter the required fields</span>'})
 
+@app.route("/addCompany", methods=["GET", "POST"])
+def addCompany():
+    if request.method == 'GET':
+        return render_template('add/addCompany.html')
+    elif request.method == 'POST':
+        name = request.json['name']
+        siret = request.json['siret']
+        if name and siret:
+            cursor.callproc('sp_insertCompany', (name, siret))
+            data = cursor.fetchall()
+            if len(data) == 0:
+                conn.commit()
+                return json.dumps({'message': 'Company created successfully !'})
+            else:
+                return json.dumps({'error': str(data[0])})
+        else:
+            return json.dumps({'html': '<span>Enter the required fields</span>'})
 
 
 # @app.route("/", methods=["GET", "POST"])
