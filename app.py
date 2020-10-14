@@ -306,6 +306,32 @@ def addCompany():
         else:
             return json.dumps({'html': '<span>Enter the required fields</span>'})
 
+@app.route("/addJob", methods=["GET", "POST"])
+def addJob():
+    if request.method == 'GET':
+        cursor.execute('SELECT * from Category')
+        category = cursor.fetchall()
+        cursor.execute('Select Id, Name from Company')
+        company = cursor.fetchall()
+        cursor.execute('SELECT RH.Id_User, User.Email FROM User, RH where User.Id = RH.Id_User ')
+        rh = cursor.fetchall()
+        return render_template('add/addJob.html', category = category, company = company, rh = rh)
+    elif request.method == 'POST':
+        title = request.json['title']
+        content = request.json['content']
+        company = request.json['company']
+        category = request.json['category']
+        rh = request.json['rh']
+        if title and content:
+            cursor.callproc('sp_insertJob', (title, content, company, category, rh))
+            data = cursor.fetchall()
+            if len(data) == 0:
+                conn.commit()
+                return json.dumps({'message': 'Job created successfully !'})
+            else:
+                return json.dumps({'error': str(data[0])})
+        else:
+            return json.dumps({'html': '<span>Enter the required fields</span>'})
 
 # @app.route("/", methods=["GET", "POST"])
 # def main():
