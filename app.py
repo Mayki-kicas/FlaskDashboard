@@ -353,6 +353,28 @@ def addMail():
         else:
             return json.dumps({'html': '<span>Enter the required fields</span>'})
 
+@app.route("/addUser", methods=["GET", "POST"])
+def addUser():
+    if request.method == "GET":
+        return render_template('add/addUser.html')
+    elif request.method == 'POST':
+        name = request.json['name']
+        lastname = request.json['lastname']
+        age = request.json['age']
+        email = request.json['email']
+        password = request.json['password']
+        category = request.json['category']
+        if name and lastname and age and email and password and category:
+            cursor.callproc('sp_insertUser', (name, lastname, age, email, password, category))
+            data = cursor.fetchall()
+            if len(data) == 0:
+                conn.commit()
+                return json.dumps({'message': 'User created successfully !'})
+            else:
+                return json.dumps({'error': str(data[0])})
+        else:
+            return json.dumps({'html': '<span>Enter the required fields</span>'})
+
 # @app.route("/", methods=["GET", "POST"])
 # def main():
 #     cursor.execute("select Job.Id, Job.Title, Content, Company.Name, Category.Title from Job, Company, Category Where Job.Id_Company=Company.Id and Job.Id_Category=Category.Id ")

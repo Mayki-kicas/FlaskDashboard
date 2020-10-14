@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% block title %} User {% endblock %} {% block content %}
 <h3>User</h3>
+<button type="button" class="btn btn-success">Add</button>
 <table class="table">
     <thead>
         <tr>
@@ -51,6 +52,9 @@
     })
     $(".btn-primary").click(function() {
         document.location.href = "/getUserUpdate" + $(this).val()
+    })
+    $(".btn-success").click(function() {
+        document.location.href = "/addUser"
     })
 </script>
 {% endblock %}
