@@ -333,6 +333,26 @@ def addJob():
         else:
             return json.dumps({'html': '<span>Enter the required fields</span>'})
 
+@app.route("/addMail", methods=["GET", "POST"])
+def addMail():
+    if request.method == 'GET':
+        cursor.execute('SELECT Advertisements.Id, Concat(Job.Title, " - ", User.Email) FROM Advertisements, Job, User WHERE Advertisements.Id_User = User.Id AND Advertisements.Id_Job = Job.Id ')
+        adv = cursor.fetchall()
+        return render_template('add/addMail.html', adv = adv)
+    elif request.method == 'POST':
+        content = request.json['content']
+        adv = request.json['adv']
+        if content and adv:
+            cursor.callproc('sp_insertMail', (content, adv))
+            data = cursor.fetchall()
+            if len(data) == 0:
+                conn.commit()
+                return json.dumps({'message': 'Mail created successfully !'})
+            else:
+                return json.dumps({'error': str(data[0])})
+        else:
+            return json.dumps({'html': '<span>Enter the required fields</span>'})
+
 # @app.route("/", methods=["GET", "POST"])
 # def main():
 #     cursor.execute("select Job.Id, Job.Title, Content, Company.Name, Category.Title from Job, Company, Category Where Job.Id_Company=Company.Id and Job.Id_Category=Category.Id ")

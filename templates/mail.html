@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% block title %} Mail {% endblock %} {% block content %}
 <h3>Mail</h3>
+<button type="button" class="btn btn-success">Add</button>
 <table class="table">
     <thead>
         <tr>
@@ -45,6 +46,9 @@
     })
     $(".btn-primary").click(function() {
         document.location.href = "/getMailUpdate" + $(this).val()
+    })
+    $(".btn-success").click(function() {
+        document.location.href = "/addMail"
     })
 </script>
 {% endblock %}
